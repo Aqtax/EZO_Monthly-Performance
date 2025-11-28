@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EZO October 2025 Performance Summary</title>
+    <style>
+        @media print {
+            body { margin: 0; }
+            .no-print { display: none; }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+            color: #333;
+            background: white;
+            padding: 20px;
+        }
+        
+        .page {
+            max-width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 4px solid #1E3A8A;
+            padding-bottom: 20px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            color: #1E3A8A;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            color: #7f8c8d;
+        }
+        
+        .metrics-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+        
+        .metric-box {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #ecf0f1;
+        }
+        
+        .metric-box.highlight {
+            background: linear-gradient(135deg, #1E3A8A 0%, #003087 100%);
+            color: white;
+            border-color: #1E3A8A;
+        }
+        
+        .metric-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-size: 1.5em;
+            color: #1E3A8A;
+            margin-bottom: 15px;
+            border-left: 5px solid #1E3A8A;
+            padding-left: 15px;
+        }
+        
+        .leaderboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .top-performers {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .performer-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .performer-item:last-child {
+            border-bottom: none;
+        }
+        
+        .rank {
+            font-size: 1.5em;
+            font-weight: bold;
+            width: 40px;
+        }
+        
+        .rank-1 { color: #C4262E; }
+        .rank-2 { color: #1E3A8A; }
+        .rank-3 { color: #6B7280; }
+        
+        .performer-name {
+            flex: 1;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .performer-stats {
+            text-align: right;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        
+        .highlights {
+            background: #F0F4FF;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #1E3A8A;
+        }
+        
+        .highlights h3 {
+            color: #1E3A8A;
+            margin-bottom: 15px;
+        }
+        
+        .highlights ul {
+            list-style: none;
+        }
+        
+        .highlights li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .highlights li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #1E3A8A;
+            font-weight: bold;
+        }
+        
+        .targets-section {
+            background: #F0F4FF;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #1E3A8A;
+        }
+        
+        .targets-section h3 {
+            color: #1E3A8A;
+            margin-bottom: 15px;
+        }
+        
+        .targets-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .target-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #D0E0FF;
+        }
+        
+        .target-item h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .target-item ul {
+            list-style: none;
+            font-size: 0.9em;
+        }
+        
+        .target-item li {
+            margin-bottom: 5px;
+            padding-left: 15px;
+            position: relative;
+        }
+        
+        .target-item li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #1E3A8A;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #1E3A8A;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .print-btn:hover {
+            background: #003087;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">🖨️ Print</button>
+    
+    <div class="page">
+        <div class="header">
+            <h1>🏆 EZO Performance Report</h1>
+            <div class="subtitle">October 2025 Monthly Summary</div>
+        </div>
+        
+        <div class="metrics-row">
+            <div class="metric-box highlight">
+                <div class="metric-number">53</div>
+                <div class="metric-label">Total Students</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-number">1,904</div>
+                <div class="metric-label">Total Weeks</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-number">35.9</div>
+                <div class="metric-label">Avg Weeks/Student</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-number">7/8</div>
+                <div class="metric-label">Active Agents</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📊 Performance Rankings</h2>
+            <div class="leaderboard">
+                <div class="top-performers">
+                    <h3>🥇 Top Performers</h3>
+                    <div class="performer-item">
+                        <span class="rank rank-1">1</span>
+                        <span class="performer-name">Mazen</span>
+                        <div class="performer-stats">
+                            16 students<br>
+                            422 weeks
+                        </div>
+                    </div>
+                    <div class="performer-item">
+                        <span class="rank rank-2">2</span>
+                        <span class="performer-name">Rayan</span>
+                        <div class="performer-stats">
+                            16 students<br>
+                            618 weeks
+                        </div>
+                    </div>
+                    <div class="performer-item">
+                        <span class="rank rank-3">3</span>
+                        <span class="performer-name">Muneer</span>
+                        <div class="performer-stats">
+                            7 students<br>
+                            249 weeks
+                        </div>
+                    </div>
+                    <div class="performer-item">
+                        <span class="rank">4</span>
+                        <span class="performer-name">Motasem</span>
+                        <div class="performer-stats">
+                            6 students<br>
+                            278 weeks
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="highlights">
+                    <h3>🌟 Key Highlights</h3>
+                    <ul>
+                        <li><strong>Growth Leader:</strong> Rayan (+6 YoY)</li>
+                        <li><strong>Quality Leader:</strong> Motasem (46.3 weeks/student)</li>
+                        <li><strong>Volume Leader:</strong> Rayan (618 total weeks)</li>
+                        <li><strong>Consistency:</strong> Mazen & Rayan tied (16 students)</li>
+                        <li><strong>Improvement:</strong> 5 agents with positive YoY growth</li>
+                        <li><strong>Team Effort:</strong> All agents contributing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 November 2025 Targets</h2>
+            <div class="targets-section">
+                <h3>Strategic Goals for Next Month</h3>
+                <div class="targets-grid">
+                    <div class="target-item">
+                        <h4>Individual Targets</h4>
+                        <ul>
+                            <li>Mazen: 18 students, 450 weeks</li>
+                            <li>Rayan: 18 students, 650 weeks</li>
+                            <li>Muneer: 10 students, 300 weeks</li>
+                            <li>Motasem: 8 students, 320 weeks</li>
+                            <li>Others: Maintain/improve levels</li>
+                        </ul>
+                    </div>
+                    <div class="target-item">
+                        <h4>Team Targets</h4>
+                        <ul>
+                            <li>Total Students: 65 (+23% vs Oct)</li>
+                            <li>Total Weeks: 2,200 (+15% vs Oct)</li>
+                            <li>Avg Weeks/Student: 34+ weeks</li>
+                            <li>Active Agents: 8/8 with students</li>
+                            <li>Growth Target: +10% MoM</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📈 Performance Comparisons</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 20px;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 5px solid #3498db;">
+                    <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.2em;">Month over Month (Oct vs Sep 2025)</h3>
+                    <table style="width: 100%; font-size: 0.9em;">
+                        <tr>
+                            <td style="padding: 8px 0; color: #7f8c8d;">Students:</td>
+                            <td style="padding: 8px 0; text-align: right;"><strong>53</strong> vs 111</td>
+                            <td style="padding: 8px 0; text-align: right; color: #e74c3c;"><strong>-58 (-52%)</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #7f8c8d;">Total Weeks:</td>
+                            <td style="padding: 8px 0; text-align: right;"><strong>1,904</strong> vs 1,237</td>
+                            <td style="padding: 8px 0; text-align: right; color: #27ae60;"><strong>+667 (+54%)</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #7f8c8d;">Avg Weeks:</td>
+                            <td style="padding: 8px 0; text-align: right;"><strong>35.9</strong> vs 11.1</td>
+                            <td style="padding: 8px 0; text-align: right; color: #27ae60;"><strong>+24.8 (+223%)</strong></td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 5px solid #e74c3c;">
+                    <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.2em;">Year over Year (Oct 2025 vs Oct 2024)</h3>
+                    <table style="width: 100%; font-size: 0.9em;">
+                        <tr>
+                            <td style="padding: 8px 0; color: #7f8c8d;">Students:</td>
+                            <td style="padding: 8px 0; text-align: right;"><strong>53</strong> vs 75</td>
+                            <td style="padding: 8px 0; text-align: right; color: #e74c3c;"><strong>-22 (-29%)</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #7f8c8d;">Avg Quality:</td>
+                            <td style="padding: 8px 0; text-align: right;"><strong>35.9</strong> vs 25.4</td>
+                            <td style="padding: 8px 0; text-align: right; color: #27ae60;"><strong>+10.5 (+41%)</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #7f8c8d;">Active Agents:</td>
+                            <td style="padding: 8px 0; text-align: right;"><strong>7</strong> vs 6</td>
+                            <td style="padding: 8px 0; text-align: right; color: #27ae60;"><strong>+1 (+17%)</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div style="background: #e8f5e8; padding: 20px; border-radius: 10px; border-left: 5px solid #28a745;">
+                <h4 style="color: #155724; margin-bottom: 10px;">💡 Key Insight</h4>
+                <p style="color: #2c3e50; line-height: 1.6;">
+                    While student numbers decreased (-52% MoM, -29% YoY), the dramatic improvement in weeks per student 
+                    (+223% MoM, +41% YoY) indicates a strategic shift toward higher quality, longer-duration placements. 
+                    Total weeks revenue increased by 54% month-over-month despite fewer students.
+                </p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Generated:</strong> November 20, 2025 | <strong>Next Review:</strong> December 15, 2025</p>
+            <p>EZO Performance Analytics • Confidential Internal Document</p>
+        </div>
+    </div>
+</body>
+</html>

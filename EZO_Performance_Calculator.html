@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EZO Performance Calculator & Target Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background: white;
+            border-bottom: 3px solid #667eea;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .input-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .input-section h3 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        
+        .results-section {
+            background: #e8f5e8;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #28a745;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #d4edda;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-label {
+            font-weight: 500;
+            color: #155724;
+        }
+        
+        .result-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #28a745;
+        }
+        
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .performance-table th,
+        .performance-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .performance-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .performance-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .score-excellent { color: #28a745; font-weight: bold; }
+        .score-good { color: #ffc107; font-weight: bold; }
+        .score-needs-improvement { color: #dc3545; font-weight: bold; }
+        
+        .target-tracker {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .target-card {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .target-card h4 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 5px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+            transition: width 0.3s ease;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 EZO Performance Calculator</h1>
+            <p>Calculate scores, set targets, and track progress</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('calculator')">Performance Calculator</button>
+            <button class="tab" onclick="showTab('tracker')">Target Tracker</button>
+            <button class="tab" onclick="showTab('comparison')">Agent Comparison</button>
+        </div>
+        
+        <!-- Calculator Tab -->
+        <div id="calculator" class="tab-content active">
+            <div class="calculator-grid">
+                <div class="input-section">
+                    <h3>📝 Enter Agent Data</h3>
+                    <div class="input-group">
+                        <label for="agentName">Agent Name</label>
+                        <input type="text" id="agentName" placeholder="Enter agent name">
+                    </div>
+                    <div class="input-group">
+                        <label for="currentStudents">Current Month Students</label>
+                        <input type="number" id="currentStudents" placeholder="0" oninput="calculateScore()">
+                    </div>
+                    <div class="input-group">
+                        <label for="totalWeeks">Total Weeks Sold</label>
+                        <input type="number" id="totalWeeks" placeholder="0" oninput="calculateScore()">
+                    </div>
+                    <div class="input-group">
+                        <label for="previousYearStudents">Previous Year Students (same month)</label>
+                        <input type="number" id="previousYearStudents" placeholder="0" oninput="calculateScore()">
+                    </div>
+                    <div class="input-group">
+                        <label for="previousMonthStudents">Previous Month Students</label>
+                        <input type="number" id="previousMonthStudents" placeholder="0" oninput="calculateScore()">
+                    </div>
+                    <button class="btn" onclick="calculateScore()">Calculate Performance Score</button>
+                </div>
+                
+                <div class="results-section">
+                    <h3>📈 Performance Results</h3>
+                    <div class="result-item">
+                        <span class="result-label">Average Weeks per Student:</span>
+                        <span class="result-value" id="avgWeeks">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Year-over-Year Growth:</span>
+                        <span class="result-value" id="yoyGrowth">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Month-over-Month Growth:</span>
+                        <span class="result-value" id="momGrowth">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Performance Score:</span>
+                        <span class="result-value" id="performanceScore">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Performance Level:</span>
+                        <span class="result-value" id="performanceLevel">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Target Tracker Tab -->
+        <div id="tracker" class="tab-content">
+            <h3>🎯 November 2025 Target Tracker</h3>
+            <div class="target-tracker">
+                <div class="target-card">
+                    <h4>Mazen</h4>
+                    <p><strong>Target:</strong> 18 students, 450 weeks</p>
+                    <p><strong>Current:</strong> <span id="mazen-current">16 students, 422 weeks</span></p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 89%"></div>
+                    </div>
+                    <p><small>89% to student target, 94% to weeks target</small></p>
+                </div>
+                
+                <div class="target-card">
+                    <h4>Rayan</h4>
+                    <p><strong>Target:</strong> 18 students, 650 weeks</p>
+                    <p><strong>Current:</strong> <span id="rayan-current">16 students, 618 weeks</span></p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 89%"></div>
+                    </div>
+                    <p><small>89% to student target, 95% to weeks target</small></p>
+                </div>
+                
+                <div class="target-card">
+                    <h4>Muneer</h4>
+                    <p><strong>Target:</strong> 10 students, 300 weeks</p>
+                    <p><strong>Current:</strong> <span id="muneer-current">7 students, 249 weeks</span></p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 70%"></div>
+                    </div>
+                    <p><small>70% to student target, 83% to weeks target</small></p>
+                </div>
+                
+                <div class="target-card">
+                    <h4>Motasem</h4>
+                    <p><strong>Target:</strong> 8 students, 320 weeks</p>
+                    <p><strong>Current:</strong> <span id="motasem-current">6 students, 278 weeks</span></p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%"></div>
+                    </div>
+                    <p><small>75% to student target, 87% to weeks target</small></p>
+                </div>
+                
+                <div class="target-card">
+                    <h4>Team Total</h4>
+                    <p><strong>Target:</strong> 65 students, 2,200 weeks</p>
+                    <p><strong>Current:</strong> <span id="team-current">53 students, 1,904 weeks</span></p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 82%"></div>
+                    </div>
+                    <p><small>82% to student target, 87% to weeks target</small></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Comparison Tab -->
+        <div id="comparison" class="tab-content">
+            <h3>⚖️ Agent Performance Comparison</h3>
+            <table class="performance-table">
+                <thead>
+                    <tr>
+                        <th>Agent</th>
+                        <th>Students</th>
+                        <th>Total Weeks</th>
+                        <th>Avg Weeks/Student</th>
+                        <th>YoY Growth</th>
+                        <th>Performance Score</th>
+                        <th>Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Mazen</strong></td>
+                        <td>16</td>
+                        <td>422</td>
+                        <td>26.4</td>
+                        <td>-1</td>
+                        <td class="score-excellent">95</td>
+                        <td class="score-excellent">Exceptional</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rayan</strong></td>
+                        <td>16</td>
+                        <td>618</td>
+                        <td>38.6</td>
+                        <td>+6</td>
+                        <td class="score-excellent">90</td>
+                        <td class="score-excellent">Exceptional</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Motasem</strong></td>
+                        <td>6</td>
+                        <td>278</td>
+                        <td>46.3</td>
+                        <td>+3</td>
+                        <td class="score-excellent">85</td>
+                        <td class="score-excellent">Excellent</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Muneer</strong></td>
+                        <td>7</td>
+                        <td>249</td>
+                        <td>35.6</td>
+                        <td>+2</td>
+                        <td class="score-excellent">80</td>
+                        <td class="score-excellent">Excellent</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Wael</strong></td>
+                        <td>5</td>
+                        <td>134</td>
+                        <td>26.8</td>
+                        <td>+5</td>
+                        <td>75</td>
+                        <td>Good</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Naji</strong></td>
+                        <td>2</td>
+                        <td>54</td>
+                        <td>27.0</td>
+                        <td>+1</td>
+                        <td>70</td>
+                        <td>Good</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Abdullah</strong></td>
+                        <td>1</td>
+                        <td>12</td>
+                        <td>12.0</td>
+                        <td>+1</td>
+                        <td class="score-good">65</td>
+                        <td class="score-good">Satisfactory</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ahmed</strong></td>
+                        <td>0</td>
+                        <td>12</td>
+                        <td>-</td>
+                        <td>-1</td>
+                        <td class="score-needs-improvement">45</td>
+                        <td class="score-needs-improvement">Needs Improvement</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+        
+        function calculateScore() {
+            const students = parseInt(document.getElementById('currentStudents').value) || 0;
+            const weeks = parseInt(document.getElementById('totalWeeks').value) || 0;
+            const prevYearStudents = parseInt(document.getElementById('previousYearStudents').value) || 0;
+            const prevMonthStudents = parseInt(document.getElementById('previousMonthStudents').value) || 0;
+            
+            // Calculate metrics
+            const avgWeeks = students > 0 ? (weeks / students).toFixed(1) : 0;
+            const yoyGrowth = students - prevYearStudents;
+            const momGrowth = students - prevMonthStudents;
+            
+            // Calculate performance score (simplified formula)
+            let score = 0;
+            score += students * 3; // Students weight
+            score += (weeks / 10); // Weeks weight (scaled down)
+            score += (avgWeeks > 30 ? 10 : avgWeeks > 20 ? 5 : 0); // Quality bonus
+            score += (yoyGrowth > 0 ? yoyGrowth * 2 : 0); // Growth bonus
+            
+            score = Math.min(100, Math.max(0, score)); // Cap between 0-100
+            
+            // Determine performance level
+            let level = '';
+            if (score >= 90) level = 'Exceptional';
+            else if (score >= 80) level = 'Excellent';
+            else if (score >= 70) level = 'Good';
+            else if (score >= 60) level = 'Satisfactory';
+            else level = 'Needs Improvement';
+            
+            // Update display
+            document.getElementById('avgWeeks').textContent = avgWeeks;
+            document.getElementById('yoyGrowth').textContent = yoyGrowth > 0 ? `+${yoyGrowth}` : yoyGrowth;
+            document.getElementById('momGrowth').textContent = momGrowth > 0 ? `+${momGrowth}` : momGrowth;
+            document.getElementById('performanceScore').textContent = Math.round(score);
+            document.getElementById('performanceLevel').textContent = level;
+        }
+    </script>
+</body>
+</html>
