@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>EZO Monthly Performance Presentation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,6 +35,14 @@
             position: relative;
             opacity: 0;
             transition: opacity 0.6s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 20px;
+                height: auto;
+                min-height: 100vh;
+            }
         }
         
         .slide.active {
@@ -71,6 +81,18 @@
             letter-spacing: -1px;
         }
         
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+                letter-spacing: -1px;
+            }
+            
+            h2 {
+                font-size: 1.8em;
+                margin-bottom: 30px;
+            }
+        }
+        
         .subtitle {
             font-size: 1.25em;
             text-align: center;
@@ -93,6 +115,38 @@
             gap: 40px;
             width: 100%;
             max-width: 1200px;
+        }
+        
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .leaderboard-table {
+                width: 100%;
+                max-width: 900px;
+                background: #ffffff;
+                border: 1px solid #e5e5e5;
+                border-radius: 8px;
+                overflow: auto;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .leaderboard-table {
+                font-size: 0.9em;
+                overflow-x: auto;
+            }
+            
+            table {
+                min-width: 500px;
+            }
         }
         
         .stat-card {
@@ -358,6 +412,13 @@
             gap: 30px;
         }
         
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+        
         .comparison-card {
             text-align: center;
             padding: 20px;
@@ -437,6 +498,15 @@
             align-items: center;
             gap: 8px;
             z-index: 1000;
+        }
+        
+        @media (max-width: 768px) {
+            .home-btn {
+                top: 10px;
+                right: 10px;
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
         }
         
         .home-btn:hover {

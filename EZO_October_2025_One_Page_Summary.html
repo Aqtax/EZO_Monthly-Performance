@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>EZO October 2025 Performance Summary</title>
     <style>
         @media print {
@@ -33,6 +35,15 @@
             padding: 30px;
         }
         
+        @media (max-width: 768px) {
+            .page {
+                max-width: 100%;
+                min-height: auto;
+                padding: 20px;
+                box-shadow: none;
+            }
+        }
+        
         .header {
             text-align: center;
             margin-bottom: 30px;
@@ -46,6 +57,12 @@
             margin-bottom: 10px;
         }
         
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+        }
+        
         .header .subtitle {
             font-size: 1.2em;
             color: #7f8c8d;
@@ -56,6 +73,13 @@
             justify-content: space-between;
             margin-bottom: 30px;
             gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .metrics-row {
+                flex-direction: column;
+                gap: 15px;
+            }
         }
         
         .metric-box {
@@ -100,6 +124,13 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .leaderboard {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
         }
         
         .top-performers {
@@ -190,6 +221,13 @@
             gap: 20px;
         }
         
+        @media (max-width: 768px) {
+            .targets-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+        
         .target-item {
             background: white;
             padding: 15px;
@@ -246,6 +284,19 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .home-btn {
+                top: 10px;
+                right: 10px;
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+            
+            .comparison-row {
+                grid-template-columns: 1fr !important;
+            }
         }
         
         .home-btn:hover {
@@ -368,7 +419,7 @@
         <div class="section">
             <h2>📈 Performance Comparisons</h2>
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 20px;">
+            <div class="comparison-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 20px;">
                 <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 5px solid #3498db;">
                     <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.2em;">Month over Month (Oct vs Sep 2025)</h3>
                     <table style="width: 100%; font-size: 0.9em;">
