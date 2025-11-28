@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EZO Agent Performance Dashboard - October 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1E3A8A 0%, #003087 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: white;
+            color: #1E3A8A;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 4px solid #1E3A8A;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #1E3A8A;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.8;
+            color: #1E3A8A;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #1E3A8A;
+            transition: transform 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .metric-card.top-performer {
+            border-left-color: #C4262E;
+            background: linear-gradient(135deg, #FFF0F0 0%, #ffffff 100%);
+        }
+        
+        .metric-card.growth-leader {
+            border-left-color: #1E3A8A;
+            background: linear-gradient(135deg, #F0F4FF 0%, #ffffff 100%);
+        }
+        
+        .metric-title {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .metric-subtitle {
+            font-size: 1.1em;
+            color: #34495e;
+        }
+        
+        .leaderboard {
+            margin: 30px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .leaderboard-header {
+            background: linear-gradient(135deg, #1E3A8A 0%, #003087 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .leaderboard-header h2 {
+            font-size: 1.8em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .rank {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .rank-1 { color: #C4262E; }
+        .rank-2 { color: #1E3A8A; }
+        .rank-3 { color: #6B7280; }
+        
+        .growth-positive { color: #1E3A8A; font-weight: bold; }
+        .growth-negative { color: #C4262E; font-weight: bold; }
+        
+        .footer {
+            background: #ecf0f1;
+            padding: 20px;
+            text-align: center;
+            color: #7f8c8d;
+        }
+        
+        .target-section {
+            margin: 30px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .target-header {
+            background: linear-gradient(135deg, #C4262E 0%, #A01F24 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .target-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .target-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #C4262E;
+        }
+        
+        .comparison-section {
+            margin: 30px;
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .comparison-header {
+            margin-bottom: 10px;
+        }
+        
+        .comparison-header h2 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .comparison-period {
+            font-size: 0.85em;
+            color: #95a5a6;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+        
+        .comparison-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .comparison-metric {
+            text-align: center;
+        }
+        
+        .comparison-metric-label {
+            font-size: 0.75em;
+            color: #95a5a6;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .comparison-values {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .comparison-current {
+            font-size: 3em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .comparison-vs {
+            font-size: 1em;
+            color: #95a5a6;
+        }
+        
+        .comparison-previous {
+            font-size: 2em;
+            color: #bdc3c7;
+        }
+        
+        .comparison-change {
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        
+        .comparison-change.positive {
+            color: #1E3A8A;
+        }
+        
+        .comparison-change.negative {
+            color: #C4262E;
+        }
+        
+        .comparison-divider {
+            height: 1px;
+            background: #ecf0f1;
+            margin: 40px 0;
+        }
+        
+        .agent-comparisons {
+            margin: 30px;
+        }
+        
+        .agent-comparison-card {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        
+        .agent-name-header {
+            font-size: 2em;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+        
+        .comparison-block {
+            padding: 20px 0;
+        }
+        
+        .comparison-block:first-child {
+            border-right: 3px solid #D0E0FF;
+            padding-right: 30px;
+        }
+        
+        .comparison-block:last-child {
+            padding-left: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>EZO Agent Performance Dashboard</h1>
+            <p>October 2025 Performance Report</p>
+        </div>
+        
+        <div class="metrics-grid">
+            <div class="metric-card top-performer">
+                <div class="metric-title">Top Performer</div>
+                <div class="metric-value">Mazen</div>
+                <div class="metric-subtitle">422 total weeks sold</div>
+            </div>
+            
+            <div class="metric-card growth-leader">
+                <div class="metric-title">Growth Leader</div>
+                <div class="metric-value">Rayan</div>
+                <div class="metric-subtitle">+6 students vs last year</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-title">Total Students</div>
+                <div class="metric-value">53</div>
+                <div class="metric-subtitle">-58 vs Sept | -22 vs Oct 2024</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-title">Total Weeks</div>
+                <div class="metric-value">1,904</div>
+                <div class="metric-subtitle">+667 vs Sept | +54% MoM</div>
+            </div>
+        </div>
+        
+        <div class="comparison-section">
+            <div class="comparison-header">
+                <h2>Month over Month</h2>
+            </div>
+            <div class="comparison-period">OCTOBER 2025 VS SEPTEMBER 2025</div>
+            
+            <div class="comparison-metrics">
+                <div class="comparison-metric">
+                    <div class="comparison-metric-label">STUDENTS</div>
+                    <div class="comparison-values">
+                        <span class="comparison-current">53</span>
+                        <span class="comparison-vs">vs</span>
+                        <span class="comparison-previous">111</span>
+                    </div>
+                    <div class="comparison-change negative">-58 (-52%)</div>
+                </div>
+                
+                <div class="comparison-metric">
+                    <div class="comparison-metric-label">TOTAL WEEKS</div>
+                    <div class="comparison-values">
+                        <span class="comparison-current">1,904</span>
+                        <span class="comparison-vs">vs</span>
+                        <span class="comparison-previous">1,237</span>
+                    </div>
+                    <div class="comparison-change positive">+667 (+54%)</div>
+                </div>
+                
+                <div class="comparison-metric">
+                    <div class="comparison-metric-label">AVG WEEKS/STUDENT</div>
+                    <div class="comparison-values">
+                        <span class="comparison-current">35.9</span>
+                        <span class="comparison-vs">vs</span>
+                        <span class="comparison-previous">11.1</span>
+                    </div>
+                    <div class="comparison-change positive">+24.8 (+223%)</div>
+                </div>
+            </div>
+            
+            <div class="comparison-divider"></div>
+            
+            <div class="comparison-header">
+                <h2>Year over Year</h2>
+            </div>
+            <div class="comparison-period">OCTOBER 2025 VS OCTOBER 2024</div>
+            
+            <div class="comparison-metrics">
+                <div class="comparison-metric">
+                    <div class="comparison-metric-label">STUDENTS</div>
+                    <div class="comparison-values">
+                        <span class="comparison-current">53</span>
+                        <span class="comparison-vs">vs</span>
+                        <span class="comparison-previous">75</span>
+                    </div>
+                    <div class="comparison-change negative">-22 (-29%)</div>
+                </div>
+                
+                <div class="comparison-metric">
+                    <div class="comparison-metric-label">ACTIVE AGENTS</div>
+                    <div class="comparison-values">
+                        <span class="comparison-current">7</span>
+                        <span class="comparison-vs">vs</span>
+                        <span class="comparison-previous">6</span>
+                    </div>
+                    <div class="comparison-change positive">+1 (+17%)</div>
+                </div>
+                
+                <div class="comparison-metric">
+                    <div class="comparison-metric-label">QUALITY IMPROVEMENT</div>
+                    <div class="comparison-values">
+                        <span class="comparison-current">35.9</span>
+                        <span class="comparison-vs">vs</span>
+                        <span class="comparison-previous">25.4</span>
+                    </div>
+                    <div class="comparison-change positive">+10.5 (+41%)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="agent-comparisons">
+            <!-- Mazen -->
+            <div class="agent-comparison-card">
+                <div class="agent-name-header">🥇 Mazen</div>
+                
+                <div class="comparison-row">
+                    <div class="comparison-block">
+                        <div class="comparison-header">
+                            <h2>Month over Month</h2>
+                        </div>
+                        <div class="comparison-period">OCTOBER 2025 VS SEPTEMBER 2025</div>
+                        
+                        <div class="comparison-metrics">
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">STUDENTS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">16</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">13</span>
+                                </div>
+                                <div class="comparison-change positive">+3 (+23%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">TOTAL WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">422</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">205</span>
+                                </div>
+                                <div class="comparison-change positive">+217 (+106%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">AVG WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">26.4</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">15.8</span>
+                                </div>
+                                <div class="comparison-change positive">+10.6 (+67%)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-block">
+                        <div class="comparison-header">
+                            <h2>Year over Year</h2>
+                        </div>
+                        <div class="comparison-period">OCTOBER 2025 VS OCTOBER 2024</div>
+                        
+                        <div class="comparison-metrics">
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">STUDENTS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">16</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">17</span>
+                                </div>
+                                <div class="comparison-change negative">-1 (-6%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">TOTAL WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">422</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">298</span>
+                                </div>
+                                <div class="comparison-change positive">+124 (+42%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">AVG WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">26.4</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">17.5</span>
+                                </div>
+                                <div class="comparison-change positive">+8.9 (+51%)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Rayan -->
+            <div class="agent-comparison-card">
+                <div class="agent-name-header">🥈 Rayan</div>
+                
+                <div class="comparison-row">
+                    <div class="comparison-block">
+                        <div class="comparison-header">
+                            <h2>Month over Month</h2>
+                        </div>
+                        <div class="comparison-period">OCTOBER 2025 VS SEPTEMBER 2025</div>
+                        
+                        <div class="comparison-metrics">
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">STUDENTS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">16</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">30</span>
+                                </div>
+                                <div class="comparison-change negative">-14 (-47%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">TOTAL WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">618</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">428</span>
+                                </div>
+                                <div class="comparison-change positive">+190 (+44%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">AVG WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">38.6</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">14.3</span>
+                                </div>
+                                <div class="comparison-change positive">+24.3 (+170%)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-block">
+                        <div class="comparison-header">
+                            <h2>Year over Year</h2>
+                        </div>
+                        <div class="comparison-period">OCTOBER 2025 VS OCTOBER 2024</div>
+                        
+                        <div class="comparison-metrics">
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">STUDENTS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">16</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">10</span>
+                                </div>
+                                <div class="comparison-change positive">+6 (+60%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">TOTAL WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">618</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">185</span>
+                                </div>
+                                <div class="comparison-change positive">+433 (+234%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">AVG WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">38.6</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">18.5</span>
+                                </div>
+                                <div class="comparison-change positive">+20.1 (+109%)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Muneer -->
+            <div class="agent-comparison-card">
+                <div class="agent-name-header">🥉 Muneer</div>
+                
+                <div class="comparison-row">
+                    <div class="comparison-block">
+                        <div class="comparison-header">
+                            <h2>Month over Month</h2>
+                        </div>
+                        <div class="comparison-period">OCTOBER 2025 VS SEPTEMBER 2025</div>
+                        
+                        <div class="comparison-metrics">
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">STUDENTS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">7</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">16</span>
+                                </div>
+                                <div class="comparison-change negative">-9 (-56%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">TOTAL WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">249</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">230</span>
+                                </div>
+                                <div class="comparison-change positive">+19 (+8%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">AVG WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">35.6</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">14.4</span>
+                                </div>
+                                <div class="comparison-change positive">+21.2 (+147%)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-block">
+                        <div class="comparison-header">
+                            <h2>Year over Year</h2>
+                        </div>
+                        <div class="comparison-period">OCTOBER 2025 VS OCTOBER 2024</div>
+                        
+                        <div class="comparison-metrics">
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">STUDENTS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">7</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">5</span>
+                                </div>
+                                <div class="comparison-change positive">+2 (+40%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">TOTAL WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">249</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">112</span>
+                                </div>
+                                <div class="comparison-change positive">+137 (+122%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">AVG WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">35.6</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">22.4</span>
+                                </div>
+                                <div class="comparison-change positive">+13.2 (+59%)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Motasem -->
+            <div class="agent-comparison-card">
+                <div class="agent-name-header">Motasem</div>
+                
+                <div class="comparison-row">
+                    <div class="comparison-block">
+                        <div class="comparison-header">
+                            <h2>Month over Month</h2>
+                        </div>
+                        <div class="comparison-period">OCTOBER 2025 VS SEPTEMBER 2025</div>
+                        
+                        <div class="comparison-metrics">
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">STUDENTS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">6</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">20</span>
+                                </div>
+                                <div class="comparison-change negative">-14 (-70%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">TOTAL WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">278</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">159</span>
+                                </div>
+                                <div class="comparison-change positive">+119 (+75%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">AVG WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">46.3</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">8.0</span>
+                                </div>
+                                <div class="comparison-change positive">+38.3 (+479%)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-block">
+                        <div class="comparison-header">
+                            <h2>Year over Year</h2>
+                        </div>
+                        <div class="comparison-period">OCTOBER 2025 VS OCTOBER 2024</div>
+                        
+                        <div class="comparison-metrics">
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">STUDENTS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">6</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">3</span>
+                                </div>
+                                <div class="comparison-change positive">+3 (+100%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">TOTAL WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">278</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">63</span>
+                                </div>
+                                <div class="comparison-change positive">+215 (+341%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">AVG WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">46.3</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">21.0</span>
+                                </div>
+                                <div class="comparison-change positive">+25.3 (+120%)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Wael -->
+            <div class="agent-comparison-card">
+                <div class="agent-name-header">Wael</div>
+                
+                <div class="comparison-row">
+                    <div class="comparison-block">
+                        <div class="comparison-header">
+                            <h2>Month over Month</h2>
+                        </div>
+                        <div class="comparison-period">OCTOBER 2025 VS SEPTEMBER 2025</div>
+                        
+                        <div class="comparison-metrics">
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">STUDENTS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">5</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">7</span>
+                                </div>
+                                <div class="comparison-change negative">-2 (-29%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">TOTAL WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">134</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">93</span>
+                                </div>
+                                <div class="comparison-change positive">+41 (+44%)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">AVG WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">26.8</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">13.3</span>
+                                </div>
+                                <div class="comparison-change positive">+13.5 (+102%)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-block">
+                        <div class="comparison-header">
+                            <h2>Year over Year</h2>
+                        </div>
+                        <div class="comparison-period">OCTOBER 2025 VS OCTOBER 2024</div>
+                        
+                        <div class="comparison-metrics">
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">STUDENTS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">5</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">0</span>
+                                </div>
+                                <div class="comparison-change positive">+5 (new)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">TOTAL WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">134</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">0</span>
+                                </div>
+                                <div class="comparison-change positive">+134 (new)</div>
+                            </div>
+                            
+                            <div class="comparison-metric">
+                                <div class="comparison-metric-label">AVG WEEKS</div>
+                                <div class="comparison-values">
+                                    <span class="comparison-current">26.8</span>
+                                    <span class="comparison-vs">vs</span>
+                                    <span class="comparison-previous">0.0</span>
+                                </div>
+                                <div class="comparison-change positive">+26.8 (new)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="leaderboard">
+            <div class="leaderboard-header">
+                <h2>📊 October 2025 Agent Rankings</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Agent</th>
+                        <th>Students (Oct)</th>
+                        <th>Total Weeks</th>
+                        <th>Avg Weeks/Student</th>
+                        <th>YoY Growth</th>
+                        <th>MoM Growth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="rank rank-1">🥇 1</td>
+                        <td><strong>Mazen</strong></td>
+                        <td>16</td>
+                        <td>422</td>
+                        <td>26.4</td>
+                        <td class="growth-negative">-1</td>
+                        <td class="growth-positive">+3</td>
+                    </tr>
+                    <tr>
+                        <td class="rank rank-2">🥈 2</td>
+                        <td><strong>Rayan</strong></td>
+                        <td>16</td>
+                        <td>618</td>
+                        <td>38.6</td>
+                        <td class="growth-positive">+6</td>
+                        <td class="growth-negative">-14</td>
+                    </tr>
+                    <tr>
+                        <td class="rank rank-3">🥉 3</td>
+                        <td><strong>Muneer</strong></td>
+                        <td>7</td>
+                        <td>249</td>
+                        <td>35.6</td>
+                        <td class="growth-positive">+2</td>
+                        <td class="growth-negative">-9</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">4</td>
+                        <td><strong>Motasem</strong></td>
+                        <td>6</td>
+                        <td>278</td>
+                        <td>46.3</td>
+                        <td class="growth-positive">+3</td>
+                        <td class="growth-negative">-14</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">5</td>
+                        <td><strong>Wael</strong></td>
+                        <td>5</td>
+                        <td>134</td>
+                        <td>26.8</td>
+                        <td class="growth-positive">+5</td>
+                        <td class="growth-negative">-2</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">6</td>
+                        <td><strong>Naji</strong></td>
+                        <td>2</td>
+                        <td>54</td>
+                        <td>27.0</td>
+                        <td class="growth-positive">+1</td>
+                        <td class="growth-negative">-3</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">7</td>
+                        <td><strong>Abdullah</strong></td>
+                        <td>1</td>
+                        <td>12</td>
+                        <td>12.0</td>
+                        <td class="growth-positive">+1</td>
+                        <td class="growth-negative">0</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">8</td>
+                        <td><strong>Ahmed</strong></td>
+                        <td>0</td>
+                        <td>12</td>
+                        <td>-</td>
+                        <td class="growth-negative">-1</td>
+                        <td class="growth-negative">-1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="comparison-section" style="background: linear-gradient(135deg, #F0F4FF 0%, #ffffff 100%); border: 2px solid #1E3A8A;">
+            <div class="comparison-header">
+                <h2>🎯 November Targets vs October Actuals</h2>
+            </div>
+            <div class="comparison-period" style="color: #1E3A8A;">TEAM PERFORMANCE - NOVEMBER 2025 TARGETS</div>
+            
+            <div class="comparison-metrics">
+                <div class="comparison-metric">
+                    <div class="comparison-metric-label">TOTAL STUDENTS</div>
+                    <div class="comparison-values">
+                        <span class="comparison-current" style="color: #1E3A8A;">65</span>
+                        <span class="comparison-vs">vs</span>
+                        <span class="comparison-previous">53</span>
+                    </div>
+                    <div class="comparison-change" style="color: #1E3A8A;">+12 needed (+23%)</div>
+                </div>
+                
+                <div class="comparison-metric">
+                    <div class="comparison-metric-label">TOTAL WEEKS</div>
+                    <div class="comparison-values">
+                        <span class="comparison-current" style="color: #1E3A8A;">2,200</span>
+                        <span class="comparison-vs">vs</span>
+                        <span class="comparison-previous">1,904</span>
+                    </div>
+                    <div class="comparison-change" style="color: #1E3A8A;">+296 needed (+15%)</div>
+                </div>
+                
+                <div class="comparison-metric">
+                    <div class="comparison-metric-label">AVG WEEKS/STUDENT</div>
+                    <div class="comparison-values">
+                        <span class="comparison-current" style="color: #1E3A8A;">34+</span>
+                        <span class="comparison-vs">vs</span>
+                        <span class="comparison-previous">35.9</span>
+                    </div>
+                    <div class="comparison-change positive">✓ Target exceeded!</div>
+                </div>
+            </div>
+            
+            <div class="comparison-divider"></div>
+            
+            <div class="comparison-period" style="color: #1E3A8A;">ALL AGENTS - INDIVIDUAL TARGETS</div>
+            
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-bottom: 20px;">
+                <!-- Mazen -->
+                <div style="background: white; padding: 25px; border-radius: 10px; border: 2px solid #D0E0FF;">
+                    <div style="font-size: 1.5em; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 20px;">🥇 Mazen</div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-right: 15px; border-right: 3px solid #D0E0FF;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">STUDENTS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">18</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">16</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+2 needed</div>
+                        </div>
+                        
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-left: 15px;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">WEEKS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">450</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">422</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+28 needed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rayan -->
+                <div style="background: white; padding: 25px; border-radius: 10px; border: 2px solid #D0E0FF;">
+                    <div style="font-size: 1.5em; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 20px;">🥈 Rayan</div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-right: 15px; border-right: 3px solid #D0E0FF;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">STUDENTS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">18</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">16</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+2 needed</div>
+                        </div>
+                        
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-left: 15px;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">WEEKS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">650</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">618</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+32 needed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Muneer -->
+                <div style="background: white; padding: 25px; border-radius: 10px; border: 2px solid #D0E0FF;">
+                    <div style="font-size: 1.5em; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 20px;">🥉 Muneer</div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-right: 15px; border-right: 3px solid #D0E0FF;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">STUDENTS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">10</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">7</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+3 needed</div>
+                        </div>
+                        
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-left: 15px;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">WEEKS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">300</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">249</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+51 needed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Motasem -->
+                <div style="background: white; padding: 25px; border-radius: 10px; border: 2px solid #D0E0FF;">
+                    <div style="font-size: 1.5em; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 20px;">Motasem</div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-right: 15px; border-right: 3px solid #D0E0FF;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">STUDENTS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">8</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">6</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+2 needed</div>
+                        </div>
+                        
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-left: 15px;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">WEEKS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">320</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">278</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+42 needed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Wael -->
+                <div style="background: white; padding: 25px; border-radius: 10px; border: 2px solid #D0E0FF;">
+                    <div style="font-size: 1.5em; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 20px;">Wael</div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-right: 15px; border-right: 3px solid #D0E0FF;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">STUDENTS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">7</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">5</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+2 needed</div>
+                        </div>
+                        
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-left: 15px;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">WEEKS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">190</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">134</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+56 needed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Naji -->
+                <div style="background: white; padding: 25px; border-radius: 10px; border: 2px solid #D0E0FF;">
+                    <div style="font-size: 1.5em; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 20px;">Naji</div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-right: 15px; border-right: 3px solid #D0E0FF;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">STUDENTS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">5</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">2</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+3 needed</div>
+                        </div>
+                        
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-left: 15px;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">WEEKS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">135</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">54</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+81 needed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Abdullah -->
+                <div style="background: white; padding: 25px; border-radius: 10px; border: 2px solid #D0E0FF;">
+                    <div style="font-size: 1.5em; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 20px;">Abdullah</div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-right: 15px; border-right: 3px solid #D0E0FF;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">STUDENTS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">3</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">1</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+2 needed</div>
+                        </div>
+                        
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-left: 15px;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">WEEKS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">65</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">12</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+53 needed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ahmed -->
+                <div style="background: white; padding: 25px; border-radius: 10px; border: 2px solid #D0E0FF;">
+                    <div style="font-size: 1.5em; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 20px;">Ahmed</div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-right: 15px; border-right: 3px solid #D0E0FF;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">STUDENTS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">2</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">0</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+2 needed</div>
+                        </div>
+                        
+                        <div class="comparison-metric" style="margin-bottom: 0; padding-left: 15px;">
+                            <div class="comparison-metric-label" style="font-size: 0.7em;">WEEKS</div>
+                            <div class="comparison-values" style="gap: 8px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #1E3A8A;">40</span>
+                                <span style="font-size: 0.8em; color: #95a5a6;">vs</span>
+                                <span style="font-size: 1.5em; color: #bdc3c7;">12</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #1E3A8A; margin-top: 5px;">+28 needed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Generated: November 20, 2025 | Next Review: December 15, 2025<br>EZO Performance Analytics • Confidential Internal Document</p>
+        </div>
+    </div>
+</body>
+</html>
