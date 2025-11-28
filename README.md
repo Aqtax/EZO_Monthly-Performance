@@ -8,7 +8,6 @@ This folder contains all files ready to upload to GitHub Pages.
 2. **EZO_Agent_Performance_Dashboard-October 2025.html** - Comprehensive agent performance metrics
 3. **EZO_Monthly_Performance_Presentation.html** - Monthly executive presentation
 4. **EZO_October_2025_One_Page_Summary.html** - Executive summary of October 2025 performance
-5. **EZO_Performance_Calculator.html** - Interactive performance metrics calculator
 
 ## How to Upload to GitHub:
 
