@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EZO Performance Dashboards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 50px;
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .dashboard-link {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .dashboard-link:hover {
+            background: #fff;
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .icon svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+        
+        .dashboard-info {
+            flex-grow: 1;
+        }
+        
+        .dashboard-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .dashboard-description {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .arrow {
+            margin-left: 10px;
+            color: #667eea;
+            font-size: 1.5em;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .date {
+            color: #667eea;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>EZO Performance Dashboards</h1>
+        <p class="subtitle">October 2025 Performance Reports & Analytics</p>
+        
+        <div class="dashboard-grid">
+            <a href="October 2025/EZO_Agent_Performance_Dashboard-October 2025.html" class="dashboard-link">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                    </svg>
+                </div>
+                <div class="dashboard-info">
+                    <div class="dashboard-title">Agent Performance Dashboard</div>
+                    <div class="dashboard-description">Comprehensive agent performance metrics and KPIs</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+            
+            <a href="October 2025/EZO_Monthly_Performance_Presentation.html" class="dashboard-link">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 7h5v5H5zm12 0h-5v2h5zm0 3h-5v2h5zm-12 3h12v4H5z"/>
+                    </svg>
+                </div>
+                <div class="dashboard-info">
+                    <div class="dashboard-title">Monthly Performance Presentation</div>
+                    <div class="dashboard-description">Executive presentation with key insights and trends</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+            
+            <a href="October 2025/EZO_October_2025_One_Page_Summary.html" class="dashboard-link">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                    </svg>
+                </div>
+                <div class="dashboard-info">
+                    <div class="dashboard-title">One-Page Executive Summary</div>
+                    <div class="dashboard-description">High-level overview of October 2025 performance</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+            
+            <a href="October 2025/EZO_Performance_Calculator.html" class="dashboard-link">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM7 7h2v2H7V7zm0 4h2v2H7v-2zm0 4h2v2H7v-2zm10 2h-6v-2h6v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zm-4 4h2v2h-2v-2zm0-4h2v2h-2V7z"/>
+                    </svg>
+                </div>
+                <div class="dashboard-info">
+                    <div class="dashboard-title">Performance Calculator</div>
+                    <div class="dashboard-description">Interactive tool for calculating performance metrics</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p>Last Updated: <span class="date">November 28, 2024</span></p>
+            <p>EZO Performance Management System</p>
+        </div>
+    </div>
+</body>
+</html>
